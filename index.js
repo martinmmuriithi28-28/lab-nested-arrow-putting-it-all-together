@@ -1,30 +1,32 @@
-
-// Login Tracker Lab
-
 // Outer function
 function createLoginTracker(userInfo) {
 
-    // Variable to keep track of login attempts
+    // Track the number of login attempts
     let attemptCount = 0;
 
-    // Nested arrow function
+    // Inner arrow function to handle login attempts
     const loginAttempt = (passwordAttempt) => {
 
-        // Increment the login attempt count
+        // Increase attempt count every time the function is called
         attemptCount++;
 
-        // Lock the account after more than 3 attempts
+        // Check if account has exceeded allowed attempts
         if (attemptCount > 3) {
             return "Account locked due to too many failed login attempts";
         }
 
-        // Check if the password is correct
+        // Check if password is correct
         if (passwordAttempt === userInfo.password) {
             return "Login successful";
         }
 
-        // Password is incorrect
-        return `Login attempt ${attemptCount}: Login failed`;
+        // Lock account after the third failed attempt
+        if (attemptCount === 3) {
+            return "Account locked due to too many failed login attempts";
+        }
+
+        // Return failed attempt message
+        return `Attempt ${attemptCount}: Login failed`;
     };
 
     // Return the nested arrow function
@@ -32,26 +34,8 @@ function createLoginTracker(userInfo) {
 }
 
 
-// Testing
-
-
-// User information
-const user = {
-    username: "user1",
-    password: "password123"
-};
-
-// Create the login tracker
-const login = createLoginTracker(user);
-
-// Test Cases
-console.log(login("wrongPassword"));
-console.log(login("123456"));
-console.log(login("hello"));
-console.log(login("password123"));
-console.log(login("password123"));
-
-
+// Export function for Jest tests
+module.exports = createLoginTracker;
 
 module.exports = {
   ...(typeof createLoginTracker !== 'undefined' && { createLoginTracker })
